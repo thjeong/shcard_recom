@@ -1,0 +1,46 @@
+.example-card {
+    max-width: 400px;
+  }
+
+img {
+    max-width: 100%;
+}
+
+::ng-deep .mat-card {
+    margin:20px;
+}
+
+section {
+    display: flex;
+    max-width: 400px;
+    justify-content: space-between;
+    margin:20px;
+  }
+  
+  .example-label {
+    display: table-cell;
+    font-size: 14px;
+    margin-left: 8px;
+    min-width: 120px;
+  }
+  
+  .example-button-row {
+    display: table-cell;
+    width: 400px;
+  }
+  
+  .example-button-row .mat-button-base {
+    margin: 8px 8px 8px 0;
+  }
+  
+  .example-flex-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .example-button-container {
+    display: flex;
+    justify-content: center;
+    width: 120px;
+  }
