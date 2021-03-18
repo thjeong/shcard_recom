@@ -6,7 +6,7 @@
 </section>
 
 
-<mat-card *ngFor="let card of card_list" class="example-card">
+<mat-card *ngFor="let card of card_list" class="example-card" (click)='select(card)'>
     <mat-card-header>
       <!-- <div mat-card-avatar class="example-header-image"></div> -->
       <mat-card-title>{{card.name}}</mat-card-title>

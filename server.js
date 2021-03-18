@@ -40,21 +40,25 @@ let ex_card = card_info.map(function(obj) {
     let ret = {}
     ret['name'] = obj.hpgCrdPdNm;
     ret['smrtt'] = obj.hpgCrdPdSmrTt;
+    ret['url'] = obj.hpgCrdPdUrlAr;
     ret['svcInfo1'] = svcinfo_parse(obj.svcInfo[0]);
     ret['svcInfo2'] = svcinfo_parse(obj.svcInfo[1]);
     ret['svcInfo3'] = svcinfo_parse(obj.svcInfo[2]);
-    ret['id'] = obj.imgInfo[0] ? obj.imgInfo[0]['hpgCrdPdCrdPdDtnN'] : null;
+    ret['id'] = obj.imgInfo[0] ? obj.imgInfo[0]['hpgCrdPdCrdPdDtnN'].split(',').map(strip)[0] : null;
     ret['img'] = obj.imgInfo[0] ? obj.imgInfo[0]['hpgCrdPdCrdImgUrlAr'] : null;
     return ret;
 });
 // console.log(ex_card);
 let card_map = {}
 ex_card.forEach(function (obj) {
-    let ids = obj['id'].split(',').map(strip);
-    // console.log(obj['name'], ids);
-    ids.forEach(function(x) {
-        card_map[x] = obj;
-    })
+    card_map[obj['id']] = obj;
+    // let ids = obj['id'].split(',').map(strip);
+    // // console.log(obj['name'], ids);
+    // ids.forEach(x => (function(x, obj) {
+    //     //obj['id'] = x;   // 아이디 여러개인 경우에도 키랑 일치하게 일단 수정..
+    //     card_map[x] = obj;
+    //     card_map[x]['key'] = x;
+    // })(x, obj));
 })
 
 // let test_arr = ['ABA002', 'ABA01R', 'ABA01W'];
@@ -76,7 +80,13 @@ app.get('/',(req,res)=>{
 app.all('/recom', (req, res) => {
     console.log('recom');
     sample_ids = ['BLAC1F', 'ABA221', 'ABA002', 'AAA1OS', 'AJA00I'];
-    res.json(sample_ids.map((id) => card_map[id]));
+    //res.json(sample_ids.map((id) => card_map[id]));
+    res.json(sample_ids); //.map((id) => card_map[id]));
+});
+
+app.all('/cardmeta', (req, res) => {
+    console.log('cardmeta');
+    res.json(card_map);
 });
  
 // set Port

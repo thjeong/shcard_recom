@@ -7,10 +7,16 @@ import { catchError, retry } from 'rxjs/operators';
     providedIn: 'root',
   })
 export class RecomService {
-  url = 'recom';
+  recom_url = 'recom';
+  meta_url = 'cardmeta';
+  
   constructor(private http: HttpClient) { }
 
   getRecom() {
-    return this.http.get(this.url);
+    return this.http.get(this.recom_url);
+  }
+
+  getCardMeta() {
+    return this.http.get(this.meta_url);
   }
 }
