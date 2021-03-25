@@ -1,9 +1,16 @@
 .example-card {
-    max-width: 400px;
+    width: 400px;
   }
 
 img {
     max-width: 100%;
+}
+
+::ng-deep .app-card-list {
+  display: flex;
+  width: 500px;
+  flex-direction: column;
+  align-items: center;
 }
 
 ::ng-deep .mat-card {
@@ -12,8 +19,9 @@ img {
 
 section {
     display: flex;
-    max-width: 400px;
+    width: 400px;
     justify-content: space-between;
+    align-items: center;
     margin:20px;
   }
   
@@ -25,8 +33,9 @@ section {
   }
   
   .example-button-row {
-    display: table-cell;
-    width: 400px;
+    display: flex;
+    justify-content: center;
+    width: 500px;
   }
   
   .example-button-row .mat-button-base {

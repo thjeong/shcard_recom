@@ -1,8 +1,8 @@
 <section>
     <div class="example-label">AI 카드추천 테스트</div>
-    <div class="example-button-row">
-        <button (click)="refresh()" mat-button>새로운 추천 받기</button>
-    </div>
+    <mat-slide-toggle [(ngModel)]="keepdata.isMale" (change)="changeToggle($event)">{{(keepdata.isMale ? '남' : '여')}}</mat-slide-toggle>
+    <mat-slider [(ngModel)]="keepdata.age" (change)="changeAgeSlider($event)" thumbLabel [displayWith]="formatLabel" min="2" max="5" step="1" value="4"></mat-slider>
+    {{'' + keepdata.age + '0대'}}
 </section>
 
 
@@ -36,3 +36,7 @@
       <button mat-button>SHARE</button>
     </mat-card-actions> -->
   </mat-card>
+
+  <div class="example-button-row">
+    <button mat-raised-button color="primary" (click)="refresh()">더 이상 원하는 카드가 없어요. 새로운 카드를 보여주세요</button>
+</div>
