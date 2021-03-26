@@ -7,8 +7,10 @@ import { catchError, retry } from 'rxjs/operators';
     providedIn: 'root',
   })
 export class RecomService {
-  recom_url = 'recom';
-  meta_url = 'cardmeta';
+  base_url = 'http://1.243.55.188:3000/';
+  recom_url = this.base_url + 'recom';
+  meta_url = this.base_url + 'cardmeta';
+  log_url = this.base_url + 'select';
   
   constructor(private http: HttpClient) { }
 
@@ -18,5 +20,9 @@ export class RecomService {
 
   getCardMeta() {
     return this.http.get(this.meta_url);
+  }
+
+  writeLog(body) {
+    return this.http.post(this.log_url, body);
   }
 }

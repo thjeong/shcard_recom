@@ -20,9 +20,13 @@
     "@angular/platform-browser": "~11.2.5",
     "@angular/platform-browser-dynamic": "~11.2.5",
     "@angular/router": "~11.2.5",
+    "base-64": "^1.0.0",
     "express": "^4.17.1",
+    "node-datetime": "^2.1.2",
+    "pg": "^8.5.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "utf8": "^3.0.0",
     "zone.js": "~0.11.3"
   },
   "devDependencies": {

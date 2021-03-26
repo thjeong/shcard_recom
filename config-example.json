@@ -1,0 +1,6 @@
+{
+    "postgre_host": "localhost",
+    "postgre_user": "me",
+    "postgre_password": "secret",
+    "postgre_db": "my_db"
+}

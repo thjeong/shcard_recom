@@ -25,7 +25,10 @@ export class CardListComponent implements OnInit {
       console.log('card meta loaded', data);
 
       this.refresh();
-      this.keepdata = JSON.parse(localStorage.getItem('aicardrecom_keepdata'));
+      let saved = JSON.parse(localStorage.getItem('aicardrecom_keepdata'))
+      if (saved) {
+        this.keepdata = saved;
+      }
     });
   }
 
@@ -53,16 +56,28 @@ export class CardListComponent implements OnInit {
     console.log('[gender toggled]', this.keepdata);
   }
 
-  select(card) {
-    window.open('https://www.shinhancard.com' + card.url, "_blank");
-    //console.log('current', this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1]);
+  select(card, idx) {
     let idx_to_update = this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1].cards.indexOf(card.id);
+    console.log('selected', 'calculate idx=', idx_to_update, 'idx=', idx);
     //console.log(card.id + ' selected (' + idx_to_update + ')', card);
     this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1].actions[idx_to_update] += 1;
-    console.log('[select]', this.keepdata);
-    //this.keepdata.User_Actions.forEach(obj => console.log(obj));
-    
-    //console.log('updated', this.User_Actions[this.User_Actions.length - 1]);
+
+    let record = {
+      'gender': (this.keepdata.isMale ? 'M' : 'F'),
+      'age': this.keepdata.age,
+      'cards': this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1].cards,
+      'actions': this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1].actions
+    }
+    this.recomService.writeLog(record).subscribe(data => {
+
+      window.open('https://www.shinhancard.com' + card.url, "_blank");
+      //console.log('current', this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1]);
+      
+      console.log('[select]', this.keepdata);
+      //this.keepdata.User_Actions.forEach(obj => console.log(obj));
+      
+      //console.log('updated', this.User_Actions[this.User_Actions.length - 1]);
+    });
   }
 
 }

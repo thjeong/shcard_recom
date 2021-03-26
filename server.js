@@ -48,7 +48,7 @@ function insert_log(values) {
         } else {
             //console.log(res.rows[0])
         }
-        client.()
+        client.end()
     });
 }
 
