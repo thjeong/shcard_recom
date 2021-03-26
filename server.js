@@ -1,17 +1,56 @@
 //기본 Express 실행코드
  
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
 const app = express();
  
 // BodyParser 미드웨어
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended:false }));
+app.use(express.json());
+//app.use(bodyParser.urlencoded({ extended:false }));
 
 const fs = require('fs');
 const { textChangeRangeIsUnchanged } = require('typescript');
+
+var dateTime = require('node-datetime');
+// Postgre connection
+var base64 = require('base-64');
+var utf8 = require('utf8');
+const { Client } = require('pg');
+
+//var config  = require('./config-example.json');
+var config  = require('./server-config.json');
+
+const client = new Client({
+    user : config.postgre_user,
+    host : config.postgre_host,
+    database : config.postgre_db,
+    password : utf8.encode(base64.decode(config.postgre_password)),
+    port : 5432,
+});
+
+// client.connect();
+// client.query('SELECT NOW()', (err, res) => {
+//     console.log('[now time]', res)
+//     client.end()
+// });
+
+const sql = "INSERT INTO access_log (day, gender, age, card1, card2, card3, card4, card5, select1, select2, select3, select4, select5, ip, ua, ld_dt) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, current_timestamp) RETURNING *";
+
+function insert_log(values) {
+    
+    //const values = ['id', 'name', 'nickname', 'email', 'pw', 'favorite_type', 'favorite_country'];
+    client.connect();
+    client.query(sql, values, (err, res) => {
+        if (err) {
+            console.log(err.stack);
+        } else {
+            //console.log(res.rows[0])
+        }
+        client.()
+    });
+}
 
 let rawdata = fs.readFileSync('cardinfo_data.json');
 let card_info = JSON.parse(rawdata)["cardInfo"];
@@ -66,6 +105,10 @@ ex_card.forEach(function (obj) {
 
 // Done loading cardmeta
 
+function getUserIP(req) {
+    const addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    return addr
+  }
 
 // 서버 static
 app.use(express.static(path.join(__dirname,'dist/card-recom')));
@@ -82,6 +125,20 @@ app.all('/recom', (req, res) => {
     sample_ids = ['BLAC1F', 'ABA221', 'ABA002', 'AAA1OS', 'AJA00I'];
     //res.json(sample_ids.map((id) => card_map[id]));
     res.json(sample_ids); //.map((id) => card_map[id]));
+});
+
+app.post('/select', (req, res) => {
+    //console.log('selected', getUserIP(req), req.header('User-Agent'));
+    //console.log('selected body', req.body);
+    
+    var dt = dateTime.create();
+    var formatted = dt.format('YmdHMS');
+
+    var data = req.body;
+
+    let data_to_insert = [formatted, data.gender, data.age].concat(data.cards).concat(data.actions).concat([getUserIP(req), req.header('User-Agent')]);
+    console.log('DB INSERT', data_to_insert);
+    insert_log(data_to_insert);
 });
 
 app.all('/cardmeta', (req, res) => {
