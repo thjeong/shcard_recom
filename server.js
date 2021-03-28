@@ -30,10 +30,10 @@ const client = new Client({
     port : 5432,
 });
 
-// client.connect();
+client.connect();
 // client.query('SELECT NOW()', (err, res) => {
 //     console.log('[now time]', res)
-//     client.end()
+//    // client.end()
 // });
 
 const sql = "INSERT INTO access_log (day, gender, age, card1, card2, card3, card4, card5, select1, select2, select3, select4, select5, ip, ua, ld_dt) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, current_timestamp) RETURNING *";
@@ -41,14 +41,14 @@ const sql = "INSERT INTO access_log (day, gender, age, card1, card2, card3, card
 function insert_log(values) {
     
     //const values = ['id', 'name', 'nickname', 'email', 'pw', 'favorite_type', 'favorite_country'];
-    client.connect();
+    // client.connect();
     client.query(sql, values, (err, res) => {
         if (err) {
             console.log(err.stack);
         } else {
             //console.log(res.rows[0])
         }
-        client.end()
+        // client.end()
     });
 }
 
