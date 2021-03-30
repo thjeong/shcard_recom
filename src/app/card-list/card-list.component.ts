@@ -69,15 +69,38 @@ export class CardListComponent implements OnInit {
       'actions': this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1].actions
     }
     this.recomService.writeLog(record).subscribe(data => {
-
-      window.open('https://www.shinhancard.com' + card.url, "_blank");
+      
+      // var win = window.open('https://www.shinhancard.com' + card.url, "_blank");
+      // console.log('[opened window]', win);
+      // if (win) {
+      //   //Browser has allowed it to be opened
+      //   win.focus();
+      // } else {
+      //     //Browser has blocked it
+      //     alert('Please allow popups for this website');
+      // }
+      
+      //this.loadlink('https://www.shinhancard.com' + card.url);
+      
       //console.log('current', this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1]);
       
       console.log('[select]', this.keepdata);
       //this.keepdata.User_Actions.forEach(obj => console.log(obj));
       
       //console.log('updated', this.User_Actions[this.User_Actions.length - 1]);
+    },
+    err => {
+      console.log(err);
     });
   }
+
+  loadlink(url) {
+    if (typeof (window.open) == "function") { 
+      window.open(url); 
+    } else { 
+      window.location.href = url; 
+    } 
+  }
+
 
 }

@@ -1,28 +1,37 @@
 .example-card {
-    width: 400px;
+    width: 80%;
   }
 
 img {
     max-width: 100%;
 }
 
+.svcinfo {
+  margin: 5px;
+}
+
+a {
+  color: darkslateblue;
+  text-decoration: none;
+}
+
 ::ng-deep .app-card-list {
   display: flex;
-  width: 500px;
+  width: 100%; 
   flex-direction: column;
   align-items: center;
 }
 
 ::ng-deep .mat-card {
-    margin:20px;
+    margin:5%;
 }
 
 section {
     display: flex;
-    width: 400px;
+    width: 90%;
     justify-content: space-between;
     align-items: center;
-    margin:20px;
+    margin: 5%;
   }
   
   .example-label {
@@ -35,7 +44,7 @@ section {
   .example-button-row {
     display: flex;
     justify-content: center;
-    width: 500px;
+    width: 100%;
   }
   
   .example-button-row .mat-button-base {

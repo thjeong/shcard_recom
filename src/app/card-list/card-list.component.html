@@ -1,5 +1,5 @@
 <section>
-    <div class="example-label">AI 카드추천 테스트</div>
+    <div class="example-label">AI 카드추천</div>
     <mat-slide-toggle [(ngModel)]="keepdata.isMale" (change)="changeToggle($event)">{{(keepdata.isMale ? '남' : '여')}}</mat-slide-toggle>
     <mat-slider [(ngModel)]="keepdata.age" (change)="changeAgeSlider($event)" thumbLabel [displayWith]="formatLabel" min="2" max="5" step="1" value="4"></mat-slider>
     {{'' + keepdata.age + '0대'}}
@@ -7,6 +7,7 @@
 
 
 <mat-card *ngFor="let card of card_list; let idx = index" class="example-card" (click)='select(card, idx)'>
+  <a href="https://www.shinhancard.com{{card.url}}">
     <mat-card-header>
       <!-- <div mat-card-avatar class="example-header-image"></div> -->
       <mat-card-title>{{card.name}}</mat-card-title>
@@ -15,22 +16,23 @@
     
     <mat-card-content>
         <div style='display:flex'>
-        <div style='max-width:160px;'>
+        <div style='max-width:60%;'>
         <img src="http://www.shinhancard.com{{card.img}}" alt={{card.id}}>
     </div>
-    <div style='max-width:160px; margin-left:20px;'>
-      <p>
+    <div style='max-width:40%;'>
+      <div class="svcinfo">
         {{card.svcInfo1}}
-      </p>
-      <p>
+      </div>
+      <div class="svcinfo">
         {{card.svcInfo2}}
-      </p>
-      <p>
+      </div>
+      <div class="svcinfo">
         {{card.svcInfo3}}
-      </p>
+      </div>
     </div>
     </div>
     </mat-card-content>
+  </a>
     <!-- <mat-card-actions>
       <button mat-button>LIKE</button>
       <button mat-button>SHARE</button>

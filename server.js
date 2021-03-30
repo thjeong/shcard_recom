@@ -46,7 +46,7 @@ function insert_log(values) {
         if (err) {
             console.log(err.stack);
         } else {
-            //console.log(res.rows[0])
+            console.log(res.rows[0])
         }
         // client.end()
     });
@@ -137,8 +137,9 @@ app.post('/select', (req, res) => {
     var data = req.body;
 
     let data_to_insert = [formatted, data.gender, data.age].concat(data.cards).concat(data.actions).concat([getUserIP(req), req.header('User-Agent')]);
-    console.log('DB INSERT', data_to_insert);
+    console.log('DB INSERT');
     insert_log(data_to_insert);
+    res.json(data_to_insert);
 });
 
 app.all('/cardmeta', (req, res) => {
