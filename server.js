@@ -120,11 +120,42 @@ app.get('/',(req,res)=>{
  res.sendFile(path.join(__dirname,'dist/card-recom/index.html'));
 });
 
-app.all('/recom', (req, res) => {
-    console.log('recom');
-    sample_ids = ['BLAC1F', 'ABA221', 'ABA002', 'AAA1OS', 'AJA00I'];
-    //res.json(sample_ids.map((id) => card_map[id]));
-    res.json(sample_ids); //.map((id) => card_map[id]));
+app.post('/recom', (req, res) => {
+    var data = req.body;
+    console.log('[recom requested from client]', JSON.stringify(data));
+
+    var ret_ids = [];
+
+    postData = JSON.stringify(data);
+
+    var options = {
+        method: 'POST',
+        protocol: 'http:',
+        hostname: 'localhost',
+        port: 5000,
+        path: '/recom',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': postData.length
+          }
+    };
+
+    var as_req = http.request(options, function(response) {
+        //console.log('[as_response]', response);
+        //res.write(JSON.parse(response));
+        response.on('data', function(data) {
+            console.log('[reponse from recom server]', JSON.parse(data));
+            res.write(data);
+        })
+        response.on('end', function() {
+            // console.log('[recom end]');
+            res.end();
+        });
+    })
+
+    as_req.write(postData);
+    as_req.end();
+
 });
 
 app.post('/select', (req, res) => {
@@ -139,6 +170,9 @@ app.post('/select', (req, res) => {
     let data_to_insert = [formatted, data.gender, data.age].concat(data.cards).concat(data.actions).concat([getUserIP(req), req.header('User-Agent')]);
     console.log('DB INSERT');
     insert_log(data_to_insert);
+
+    // get actions from recom server
+    
     res.json(data_to_insert);
 });
 

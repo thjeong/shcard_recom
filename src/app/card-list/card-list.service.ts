@@ -14,8 +14,8 @@ export class RecomService {
   
   constructor(private http: HttpClient) { }
 
-  getRecom() {
-    return this.http.get(this.recom_url);
+  getRecom(data) {
+    return this.http.post(this.recom_url, data);
   }
 
   getCardMeta() {

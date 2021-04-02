@@ -13,7 +13,10 @@ export class CardListComponent implements OnInit {
   keepdata = {
     isMale: true,
     age: 4,
-    User_Actions: []
+    User_Actions: [{'cards': [], 'actions': [0, 0, 0, 0, 0]},
+      {'cards': [], 'actions': [0, 0, 0, 0, 0]},
+      {'cards': [], 'actions': [0, 0, 0, 0, 0]}
+    ]
   };
 
   constructor(private recomService : RecomService) { }
@@ -33,7 +36,7 @@ export class CardListComponent implements OnInit {
   }
 
   refresh() {
-    this.recomService.getRecom().subscribe((data:any) => {
+    this.recomService.getRecom(this.keepdata).subscribe((data:any) => {
       console.log('received', data);
       this.keepdata.User_Actions.push({cards:data, actions:Array(data.length).fill(0)});
       if (this.keepdata.User_Actions.length > 3) this.keepdata.User_Actions.shift();
