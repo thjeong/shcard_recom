@@ -7,7 +7,8 @@ import { catchError, retry } from 'rxjs/operators';
     providedIn: 'root',
   })
 export class RecomService {
-  base_url = 'http://1.243.55.188:3000/';
+  //base_url = 'http://1.243.55.188:3000/';
+  base_url = 'http://35.222.20.141/';
   recom_url = this.base_url + 'recom';
   meta_url = this.base_url + 'cardmeta';
   log_url = this.base_url + 'select';
