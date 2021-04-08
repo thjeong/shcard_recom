@@ -140,6 +140,8 @@ app.post('/recom', (req, res) => {
           }
     };
 
+    console.log('[sending recom request to backend]', postData);
+
     var as_req = http.request(options, function(response) {
         //console.log('[as_response]', response);
         //res.write(JSON.parse(response));
