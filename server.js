@@ -75,30 +75,52 @@ function svcinfo_parse(obj) {
     return ret;
 }
 
-let ex_card = card_info.map(function(obj) {
-    let ret = {}
-    ret['name'] = obj.hpgCrdPdNm;
-    ret['smrtt'] = obj.hpgCrdPdSmrTt;
-    ret['url'] = obj.hpgCrdPdUrlAr;
-    ret['svcInfo1'] = svcinfo_parse(obj.svcInfo[0]);
-    ret['svcInfo2'] = svcinfo_parse(obj.svcInfo[1]);
-    ret['svcInfo3'] = svcinfo_parse(obj.svcInfo[2]);
-    ret['id'] = obj.imgInfo[0] ? obj.imgInfo[0]['hpgCrdPdCrdPdDtnN'].split(',').map(strip)[0] : null;
-    ret['img'] = obj.imgInfo[0] ? obj.imgInfo[0]['hpgCrdPdCrdImgUrlAr'] : null;
-    return ret;
+var valid_ids = ['BFBBQ0', 'AFJAPT', 'AFJAPU', 'BFAB8J', 'BEKBCU', 'AXCB5L', 'ATAAMK', 'APB9YL', 'BMABZ2', 'BJABE3', 'BJCBLP', 'BLABSJ', 'BIABE0', 'AXDBMR', 'BNBC47', 'BCBBLO', 'BLBBSK', 'BDAB6R', 'BELBD7', 'AFA00A', 'ALQARY', 'BA69LH', 'AEC03A', 'ALZCCY', 'AUAARH', 'BPAC88', 'AXAAZE', 'AZAAZW', 'BCAAZX', 'BA7A3X', 'BA7AQ7', 'AVAATJ', 'ALSB7E', 'ALSB7F', 'ALWBPA', 'ALWBPB', 'ALMA1V', 'ALMA1U', 'ALRB01', 'ALRB02', 'ALPAPE', 'ALPAPF', 'ALNA7M', 'ALNA7N', 'ALNA7L', 'ALXC6E', 'ALOBFQ', 'BCECA3', 'AXGC75', 'AYAAZF', 'BELBX9', 'AQCAFX', 'AOBCB7', 'AOBCB6', 'AWABHH', 'BOACF4', 'BCCBYF', 'BECB97', 'BEAB7G', 'BOAC6A']
+let card_map = {};
+
+card_info.forEach(function(obj) {
+
+    // ret['id'] = '';
+    // ret['img'] = '';
+    obj.imgInfo.forEach(imgObj => {
+        let tmp_list = imgObj['hpgCrdPdCrdPdDtnN'].split(',').map(strip);
+        tmp_list.forEach(tmp_cardid => {
+            if (valid_ids.includes(tmp_cardid)) {
+                let ret = {}
+                ret['name'] = obj.hpgCrdPdNm;
+                ret['smrtt'] = obj.hpgCrdPdSmrTt;
+                ret['url'] = obj.hpgCrdPdUrlAr;
+                ret['svcInfo1'] = svcinfo_parse(obj.svcInfo[0]);
+                ret['svcInfo2'] = svcinfo_parse(obj.svcInfo[1]);
+                ret['svcInfo3'] = svcinfo_parse(obj.svcInfo[2]);
+                ret['id'] = tmp_cardid;
+                ret['img'] = imgObj['hpgCrdPdCrdImgUrlAr'];
+                card_map[tmp_cardid] = ret;
+            }
+        })
+    });
+    //ret['id'] = obj.imgInfo[0] ? obj.imgInfo[0]['hpgCrdPdCrdPdDtnN'].split(',').map(strip)[0] : null;
+    //ret['img'] = obj.imgInfo[0] ? obj.imgInfo[0]['hpgCrdPdCrdImgUrlAr'] : null;
+    //return ret;
 });
+
+//ex_card = ex_card.filter(obj => obj['id'] != '');
+
 // console.log(ex_card);
-let card_map = {}
-ex_card.forEach(function (obj) {
-    card_map[obj['id']] = obj;
-    // let ids = obj['id'].split(',').map(strip);
-    // // console.log(obj['name'], ids);
-    // ids.forEach(x => (function(x, obj) {
-    //     //obj['id'] = x;   // 아이디 여러개인 경우에도 키랑 일치하게 일단 수정..
-    //     card_map[x] = obj;
-    //     card_map[x]['key'] = x;
-    // })(x, obj));
-})
+// let card_map = {}
+// ex_card.forEach(function (obj) {
+//     card_map[obj['id']] = obj;
+//     // let ids = obj['id'].split(',').map(strip);
+//     // // console.log(obj['name'], ids);
+//     // ids.forEach(x => (function(x, obj) {
+//     //     //obj['id'] = x;   // 아이디 여러개인 경우에도 키랑 일치하게 일단 수정..
+//     //     card_map[x] = obj;
+//     //     card_map[x]['key'] = x;
+//     // })(x, obj));
+// })
+
+console.log('[CARD LIST]', card_map);
+console.log("length of card_list : " + Object.keys(card_map).length);
 
 // let test_arr = ['ABA002', 'ABA01R', 'ABA01W'];
 // test_arr.forEach((x) => console.log(card_map[x]));
