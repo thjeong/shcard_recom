@@ -42,6 +42,7 @@ export class CardListComponent implements OnInit {
       if (this.keepdata.User_Actions.length > 3) this.keepdata.User_Actions.shift();
       console.log('User_Actions', this.keepdata);
       this.card_list = data.map(obj => this.card_meta[obj]);
+      console.log('card-list', this.card_list);
     });
   }
 

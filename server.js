@@ -52,6 +52,8 @@ function insert_log(values) {
     });
 }
 
+//
+// https://www.shinhancard.com/logic/json/cardinfo_data.json
 let rawdata = fs.readFileSync('cardinfo_data.json');
 let card_info = JSON.parse(rawdata)["cardInfo"];
 //console.log("length of card_info : " + card_info.length)
@@ -153,7 +155,7 @@ app.post('/recom', (req, res) => {
     var options = {
         method: 'POST',
         protocol: 'http:',
-        hostname: 'localhost',
+        hostname: '35.222.20.141',
         port: 5000,
         path: '/recom',
         headers: {
