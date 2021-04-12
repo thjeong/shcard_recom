@@ -45,8 +45,13 @@ function insert_log(values) {
     client.query(sql, values, (err, res) => {
         if (err) {
             console.log(err.stack);
+            console.log("### closing connection ...")
+            client.end();
+            console.log("### establishing new connection ...")
+            client.connect();
+            console.log("### done");
         } else {
-            console.log(res.rows[0])
+            console.log(res.rows[0]);
         }
         // client.end()
     });
@@ -146,7 +151,7 @@ app.get('/',(req,res)=>{
 
 app.post('/recom', (req, res) => {
     var data = req.body;
-    console.log('[recom requested from client]', JSON.stringify(data));
+    console.log('[requested]', JSON.stringify(data));
 
     var ret_ids = [];
 
@@ -164,13 +169,13 @@ app.post('/recom', (req, res) => {
           }
     };
 
-    console.log('[sending recom request to backend]', postData);
+    //console.log('[sending recom request to backend]', postData);
 
     var as_req = http.request(options, function(response) {
         //console.log('[as_response]', response);
         //res.write(JSON.parse(response));
         response.on('data', function(data) {
-            console.log('[reponse from recom server]', JSON.parse(data));
+            console.log('[reponse]', JSON.parse(data));
             res.write(data);
         })
         response.on('end', function() {
