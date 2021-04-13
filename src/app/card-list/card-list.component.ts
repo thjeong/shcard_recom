@@ -27,15 +27,17 @@ export class CardListComponent implements OnInit {
       this.card_meta = data;
       console.log('card meta loaded', data);
 
-      this.refresh();
       let saved = JSON.parse(localStorage.getItem('aicardrecom_keepdata'))
       if (saved) {
+        console.log('[loaded keepdata]', saved);
         this.keepdata = saved;
       }
+      this.refresh();
     });
   }
 
   refresh() {
+    console.log('[refresh keepdata]', this.keepdata);
     this.recomService.getRecom(this.keepdata).subscribe((data:any) => {
       console.log('received', data);
       this.keepdata.User_Actions.push({cards:data, actions:Array(data.length).fill(0)});
@@ -51,12 +53,30 @@ export class CardListComponent implements OnInit {
   }
 
   changeAgeSlider(event) {
-    localStorage.setItem('aicardrecom_keepdata', JSON.stringify(this.keepdata));
+    let empty_data = {
+      isMale: this.keepdata.isMale,
+      age: this.keepdata.age,
+      User_Actions: [{'cards': [], 'actions': [0, 0, 0, 0, 0]},
+        {'cards': [], 'actions': [0, 0, 0, 0, 0]},
+        {'cards': [], 'actions': [0, 0, 0, 0, 0]}
+      ]
+    };
+    localStorage.setItem('aicardrecom_keepdata', JSON.stringify(empty_data));
+    this.keepdata = empty_data;
     console.log('[age changed]', this.keepdata);
   }
 
   changeToggle(event) {
-    localStorage.setItem('aicardrecom_keepdata', JSON.stringify(this.keepdata));
+    let empty_data = {
+      isMale: this.keepdata.isMale,
+      age: this.keepdata.age,
+      User_Actions: [{'cards': [], 'actions': [0, 0, 0, 0, 0]},
+        {'cards': [], 'actions': [0, 0, 0, 0, 0]},
+        {'cards': [], 'actions': [0, 0, 0, 0, 0]}
+      ]
+    };
+    localStorage.setItem('aicardrecom_keepdata', JSON.stringify(empty_data));
+    this.keepdata = empty_data;
     console.log('[gender toggled]', this.keepdata);
   }
 
@@ -72,6 +92,7 @@ export class CardListComponent implements OnInit {
       'cards': this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1].cards,
       'actions': this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1].actions
     }
+    localStorage.setItem('aicardrecom_keepdata', JSON.stringify(this.keepdata));
     this.recomService.writeLog(record).subscribe(data => {
       
       // var win = window.open('https://www.shinhancard.com' + card.url, "_blank");
@@ -88,10 +109,8 @@ export class CardListComponent implements OnInit {
       
       //console.log('current', this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1]);
       
-      console.log('[select]', this.keepdata);
-      //this.keepdata.User_Actions.forEach(obj => console.log(obj));
-      
-      //console.log('updated', this.User_Actions[this.User_Actions.length - 1]);
+      //console.log('[select]', this.keepdata);
+      this.loadlink("https://www.shinhancard.com" + card.url);
     },
     err => {
       console.log(err);
@@ -99,6 +118,7 @@ export class CardListComponent implements OnInit {
   }
 
   loadlink(url) {
+    console.log('loading link :', url);
     if (typeof (window.open) == "function") { 
       window.open(url); 
     } else { 
