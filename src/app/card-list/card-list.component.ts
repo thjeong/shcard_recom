@@ -37,7 +37,9 @@ export class CardListComponent implements OnInit {
   }
 
   refresh() {
-    console.log('[추천 모델 입력값]', this.keepdata);
+
+    console.log('[추천 모델 입력값]', JSON.parse(JSON.stringify(this.keepdata)));
+    
     this.recomService.getRecom(this.keepdata).subscribe((data:any) => {
       console.log('[추천 모델의 추천값]', data);
       this.keepdata.User_Actions.push({cards:data, actions:Array(data.length).fill(0)});
@@ -64,6 +66,7 @@ export class CardListComponent implements OnInit {
     localStorage.setItem('aicardrecom_keepdata', JSON.stringify(empty_data));
     this.keepdata = empty_data;
     console.log('[나이변경 : 사용자 기록 초기화]', this.keepdata);
+    this.refresh();
   }
 
   changeToggle(event) {
@@ -78,6 +81,7 @@ export class CardListComponent implements OnInit {
     localStorage.setItem('aicardrecom_keepdata', JSON.stringify(empty_data));
     this.keepdata = empty_data;
     console.log('[성별변경 : 사용자 기록 초기화]', this.keepdata);
+    this.refresh();
   }
 
   select(card, idx) {
