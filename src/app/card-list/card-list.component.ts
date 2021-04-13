@@ -25,11 +25,11 @@ export class CardListComponent implements OnInit {
   
     this.recomService.getCardMeta().subscribe((data:any) => {
       this.card_meta = data;
-      console.log('card meta loaded', data);
+      console.log('카드 메타데이터 로딩', data);
 
       let saved = JSON.parse(localStorage.getItem('aicardrecom_keepdata'))
       if (saved) {
-        console.log('[loaded keepdata]', saved);
+        console.log('[이전까지 저장된 사용자기록]', saved);
         this.keepdata = saved;
       }
       this.refresh();
@@ -37,14 +37,14 @@ export class CardListComponent implements OnInit {
   }
 
   refresh() {
-    console.log('[refresh keepdata]', this.keepdata);
+    console.log('[추천 모델 입력값]', this.keepdata);
     this.recomService.getRecom(this.keepdata).subscribe((data:any) => {
-      console.log('received', data);
+      console.log('[추천 모델의 추천값]', data);
       this.keepdata.User_Actions.push({cards:data, actions:Array(data.length).fill(0)});
       if (this.keepdata.User_Actions.length > 3) this.keepdata.User_Actions.shift();
-      console.log('User_Actions', this.keepdata);
+      //console.log('User_Actions', this.keepdata);
       this.card_list = data.map(obj => this.card_meta[obj]);
-      console.log('card-list', this.card_list);
+      console.log('[추천 모델 추천카드 목록]', this.card_list);
     });
   }
 
@@ -63,7 +63,7 @@ export class CardListComponent implements OnInit {
     };
     localStorage.setItem('aicardrecom_keepdata', JSON.stringify(empty_data));
     this.keepdata = empty_data;
-    console.log('[age changed]', this.keepdata);
+    console.log('[나이변경 : 사용자 기록 초기화]', this.keepdata);
   }
 
   changeToggle(event) {
@@ -77,12 +77,12 @@ export class CardListComponent implements OnInit {
     };
     localStorage.setItem('aicardrecom_keepdata', JSON.stringify(empty_data));
     this.keepdata = empty_data;
-    console.log('[gender toggled]', this.keepdata);
+    console.log('[성별변경 : 사용자 기록 초기화]', this.keepdata);
   }
 
   select(card, idx) {
     let idx_to_update = this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1].cards.indexOf(card.id);
-    console.log('selected', 'calculate idx=', idx_to_update, 'idx=', idx);
+    console.log('[사용자 선택]', 'calculate idx=', idx_to_update, 'idx=', idx);
     //console.log(card.id + ' selected (' + idx_to_update + ')', card);
     this.keepdata.User_Actions[this.keepdata.User_Actions.length - 1].actions[idx_to_update] += 1;
 
@@ -118,7 +118,7 @@ export class CardListComponent implements OnInit {
   }
 
   loadlink(url) {
-    console.log('loading link :', url);
+    console.log('[선택된 URL로 이동]', url);
     if (typeof (window.open) == "function") { 
       window.open(url); 
     } else { 
